@@ -1,20 +1,10 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Exchange",
+  "name": "Pooppup Exchange",
   "icons": [
     {
-      "src": "icons8-us-dollar-circled.png",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
-    },
-    {
-      "src": "icons8-us-dollar-circled.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "icons8-us-dollar-circled.png",
-      "sizes": "512x512",
+      "src": "public/icons8-dollar-64.png",
+      "sizes": "64x64",
       "type": "image/png"
     }
   ],

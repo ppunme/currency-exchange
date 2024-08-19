@@ -29,6 +29,7 @@ const Calculate = () => {
   const [note20, setNote20] = useState('');
   const [coin10, setCoin10] = useState('');
   const [coin5, setCoin5] = useState('');
+  const [coin1, setCoin1] = useState('');
 
   // MYR
   const [note10, setNote10] = useState('');
@@ -64,6 +65,7 @@ const Calculate = () => {
       const note20Value = note20 === '' ? 0 : Number(note20);
       const coin10Value = coin10 === '' ? 0 : Number(coin10);
       const coin5Value = coin5 === '' ? 0 : Number(coin5);
+      const coin1Value = coin1 === '' ? 0 : Number(coin1);
 
       // Calculate total value in local currency
       const totalAmount =
@@ -73,7 +75,8 @@ const Calculate = () => {
         note50Value * 50 +
         note20Value * 20 +
         coin10Value * 10 +
-        coin5Value * 5;
+        coin5Value * 5 +
+        coin1Value * 1;
 
       const conversionRate =
         currency === 'THB' ? rates.sellingRate || 0 : rates.buyingRate || 0;
@@ -104,6 +107,7 @@ const Calculate = () => {
     note20,
     coin10,
     coin5,
+    coin1,
     currency,
     rates,
     loading,
@@ -229,6 +233,12 @@ const Calculate = () => {
                   value={coin5}
                   onChange={handleInputChange(setCoin5, 'coin5')}
                   error={!!errors.coin5}
+                />
+                <FormInput
+                  label='1'
+                  value={coin1}
+                  onChange={handleInputChange(setCoin1, 'coin1')}
+                  error={!!errors.coin1}
                 />
               </div>
             )}
