@@ -5,6 +5,7 @@
   "home": "Home",
   "report": "Report",
   "save": "Save",
+  "close": "Close",
   "cashFloat": "Cash Float",
   "transactionName": "Transaction Name",
   "thb": "THB",
@@ -29,5 +30,7 @@
   "cashFloatUpdatedSuccessfully": "Cash float updated successfully!",
   "noTransactionsForThisDate": "No transactions for this date",
   "selectDate": "Select date",
-  "download": "Download"
+  "download": "Download",
+  "receipt": "Receipt",
+  "print": "Print"
 }

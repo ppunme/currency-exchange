@@ -5,6 +5,7 @@
   "home": "หน้าแรก",
   "report": "รายงาน",
   "save": "บันทึก",
+  "close": "ปิด",
   "cashFloat": "เงินสำรอง",
   "transactionName": "ชื่อรายการ",
   "thb": "บาท (THB)",
@@ -29,5 +30,7 @@
   "cashFloatUpdatedSuccessfully": "เงินสำรองอัปเดตแล้ว!",
   "noTransactionsForThisDate": "ไม่มีรายการสำหรับวันนี้",
   "selectDate": "วันที่",
-  "download": "ดาวน์โหลด"
+  "download": "ดาวน์โหลด",
+  "receipt": "ใบเสร็จรับเงิน",
+  "print": "พิมพ์"
 }

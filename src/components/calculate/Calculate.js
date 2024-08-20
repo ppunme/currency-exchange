@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Divider, Button } from '@mui/material';
 import Flag from '../Flag';
@@ -11,6 +11,10 @@ import { useTranslation } from 'react-i18next';
 import SuccessModal from '../SuccessModal';
 import { saveTransaction } from '../../services/transactionService';
 import useStore from '../../store/store';
+import { useReactToPrint } from 'react-to-print';
+import Receipt from './Receipt';
+import PrintModal from './PrintModal';
+import ConfirmModal from '../ConfirmModal';
 
 const Calculate = () => {
   const { t } = useTranslation();
@@ -37,7 +41,11 @@ const Calculate = () => {
   const [note1, setNote1] = useState('');
 
   const [errors, setErrors] = useState({});
+  const [confirmModal, setConfirmModal] = useState(false);
+  const [printModal, setPrintModal] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
+
+  const printRef = useRef();
 
   const handleInputChange = (setter, field) => (e) => {
     const value = e.target.value;
@@ -113,7 +121,11 @@ const Calculate = () => {
     loading,
   ]);
 
-  const handleSubmit = async () => {
+  const handleCancel = () => {
+    navigate(-1);
+  };
+
+  const handleSaveTransaction = async () => {
     try {
       // post transaction to indexedDB
       const response = await saveTransaction(
@@ -123,15 +135,43 @@ const Calculate = () => {
       );
 
       if (response.status === 200) {
-        setSuccessModal(true);
+        setConfirmModal(false);
+        setPrintModal(true);
       }
     } catch (error) {
       console.error('Error saving transaction:', error);
-      alert('Failed to save transaction');
     }
   };
 
-  const onCloseModal = () => {
+  const print = useReactToPrint({
+    content: () => printRef.current,
+    documentTitle: 'Currency Exchange Receipt',
+    pageStyle: `
+      @page {
+        size: 80mm 120mm;
+        margin: 0;
+      }
+      @media print {
+        body {
+          margin: 0;
+        }
+      }
+    `,
+    onAfterPrint: () => setSuccessModal(true),
+    // removeAfterPrint: true,
+  });
+
+  const handlePrint = () => {
+    print();
+    setPrintModal(false);
+  };
+
+  const closePrintModal = () => {
+    setPrintModal(false);
+    setSuccessModal(true);
+  };
+
+  const closeSuccessfulModal = () => {
     setSuccessModal(false);
     navigate('/');
   };
@@ -294,17 +334,49 @@ const Calculate = () => {
           </div>
         </div>
       </div>
-      <div className='flex justify-end mt-3'>
+      <div className='flex justify-end space-x-2 mt-4'>
         <Button
+          variant='outlined'
+          onClick={handleCancel}
+          size='large'
+          className='w-36'
+        >
+          {t('cancel')}
+        </Button>
+        <Button
+          disableElevation
           variant='contained'
-          onClick={handleSubmit}
+          onClick={() => setConfirmModal(true)}
           size='large'
           className='w-36'
         >
           {t('save')}
         </Button>
       </div>
-      <SuccessModal open={successModal} onClose={onCloseModal} />
+
+      <ConfirmModal
+        open={confirmModal}
+        onClose={() => setConfirmModal(false)}
+        onSave={handleSaveTransaction}
+      />
+
+      <PrintModal
+        open={printModal}
+        onClose={closePrintModal}
+        handlePrint={handlePrint}
+      >
+        <Receipt
+          ref={printRef}
+          currency={currency}
+          totalAmount={totalAmount}
+          convertedAmount={convertedAmount}
+          rates={rates}
+        />
+      </PrintModal>
+
+      <SuccessModal open={successModal} onClose={closeSuccessfulModal} />
+
+      <div className='hidden'></div>
     </div>
   );
 };
