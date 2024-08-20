@@ -3,7 +3,7 @@
   "name": "Pooppup Exchange",
   "icons": [
     {
-      "src": "public/icons8-dollar-64.png",
+      "src": "icons8-dollar-64.png",
       "sizes": "64x64",
       "type": "image/png"
     }
