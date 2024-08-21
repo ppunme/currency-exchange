@@ -15,7 +15,7 @@ const LangSwitch = () => {
         onClick={() => handleChangeLanguage('th')}
         className={`px-2 py-1 text-sm rounded-l-lg ${
           i18n.language === 'th'
-            ? 'bg-blue-500 text-white'
+            ? 'bg-[#1976d2] text-white'
             : 'bg-gray-200 text-gray-800'
         } hover:bg-blue-600 hover:text-white focus:outline-none`}
       >
@@ -25,7 +25,7 @@ const LangSwitch = () => {
         onClick={() => handleChangeLanguage('en')}
         className={`px-2 py-1 text-sm rounded-r-lg ${
           i18n.language === 'en'
-            ? 'bg-blue-500 text-white'
+            ? 'bg-[#1976d2] text-white'
             : 'bg-gray-200 text-gray-800'
         } hover:bg-blue-600 hover:text-white focus:outline-none`}
       >

@@ -9,7 +9,7 @@ import { formatNumber } from '../../utils/number';
 import FormInput from './FormInput';
 import { useTranslation } from 'react-i18next';
 import SuccessModal from '../SuccessModal';
-import { TransactionService } from '../../services';
+import { TransactionService, AddressService } from '../../services';
 import useStore from '../../store/store';
 import { useReactToPrint } from 'react-to-print';
 import Receipt from './Receipt';
@@ -47,6 +47,7 @@ const Calculate = () => {
 
   const printRef = useRef();
   const [receiptNo, setReceiptNo] = useState(null);
+  const [address, setAddress] = React.useState(null);
 
   const handleInputChange = (setter, field) => (e) => {
     const value = e.target.value;
@@ -153,14 +154,21 @@ const Calculate = () => {
         size: 80mm 120mm;
         margin: 0;
       }
-      @media print {
-        body {
-          margin: 0;
-        }
-      }
     `,
+
+    // pageStyle: `
+    //   @page {
+    //     size: 80mm 120mm;
+    //     margin: 0;
+    //   }
+    //   @media print {
+    //     body {
+    //       margin: 0;
+    //     }
+    //   }
+    // `,
     onAfterPrint: () => setSuccessModal(true),
-    // removeAfterPrint: true,
+    removeAfterPrint: true,
   });
 
   const handlePrint = () => {
@@ -177,6 +185,18 @@ const Calculate = () => {
     setSuccessModal(false);
     navigate('/');
   };
+
+  useEffect(() => {
+    async function fetchAddress() {
+      try {
+        const address = await AddressService.getAddress();
+        setAddress(address);
+      } catch (error) {
+        console.error('Error fetching address:', error);
+      }
+    }
+    fetchAddress();
+  }, []);
 
   if (loading) return <div>Loading...</div>;
 
@@ -351,6 +371,7 @@ const Calculate = () => {
           onClick={() => setConfirmModal(true)}
           size='large'
           className='w-36'
+          disabled={totalAmount === 0}
         >
           {t('save')}
         </Button>
@@ -374,6 +395,7 @@ const Calculate = () => {
           convertedAmount={convertedAmount}
           rates={rates}
           receiptNo={receiptNo}
+          address={address}
         />
       </PrintModal>
 

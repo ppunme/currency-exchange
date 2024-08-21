@@ -32,5 +32,18 @@
   "selectDate": "Select date",
   "download": "Download",
   "receipt": "Receipt",
-  "print": "Print"
+  "print": "Print",
+  "settings": "Settings",
+  "address": "Address",
+  "database": "Database",
+  "district": "District",
+  "province": "Province",
+  "zipcode": "Zip Code",
+  "edit": "Edit",
+  "deleteDBTitle": "Delete Database",
+  "deleteDBDesc": "Warning: This action will permanently delete all data from the database. This action cannot be undone. Please ensure that you have backed up any important information before proceeding.",
+  "phone": "Phone",
+  "licenseNo": "License No.",
+  "companyInfo": "Company Info",
+  "companyName": "Company Name"
 }

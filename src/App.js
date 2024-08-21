@@ -1,6 +1,6 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
   useNavigate,
@@ -64,9 +64,8 @@ const Main = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      {/* <Navbar /> */}
       <Container maxWidth='md' className='space-y-6 min-h-screen'>
-        <div class='flex flex-col min-h-screen'>
+        <div className='flex flex-col min-h-screen'>
           {/* Header */}
           <header className='flex flex-col sm:flex-row sm:justify-between space-y-2 sm:space-y-0 pt-8'>
             <div className='flex sm:flex-col justify-between items-center sm:justify-start sm:items-start'>
@@ -84,7 +83,7 @@ const Main = () => {
               <div className='flex items-center sm:mt-2'>
                 <LangSwitch />
                 <div className='sm:hidden'>
-                  <Tooltip title='Setting'>
+                  <Tooltip title={t('settings')}>
                     <IconButton
                       onClick={handleSettings}
                       className='!text-gray-700 !p-1'
@@ -98,7 +97,7 @@ const Main = () => {
             <div>
               <div className='flex flex-col space-y-2 sm:flex-row sm:justify-end sm:space-y-0 sm:space-x-2 sm:items-center'>
                 <div className='hidden sm:block'>
-                  <Tooltip title='Setting'>
+                  <Tooltip title={t('settings')}>
                     <IconButton
                       onClick={handleSettings}
                       className='!text-gray-700 !p-1'
@@ -131,7 +130,7 @@ const Main = () => {
             </div>
           </header>
 
-          <div class='grow py-6'>
+          <div className='grow py-6'>
             <Routes>
               <Route
                 path='/'

@@ -1,56 +1,37 @@
 import { openDB } from './db';
 
-export async function addAddress(address) {
+export async function addAddress(formValues) {
   const db = await openDB();
+
   return new Promise((resolve, reject) => {
     const transaction = db.transaction(['addresses'], 'readwrite');
     const store = transaction.objectStore('addresses');
-    const request = store.add({ address });
+    const request = store.put(formValues); // Use put to add or update
 
     request.onsuccess = () => {
-      resolve('Address added successfully');
+      resolve('Address saved successfully');
     };
 
     request.onerror = (event) => {
-      reject('Failed to add address: ' + event.target.errorCode);
+      reject('Failed to save address: ' + event.target.error);
     };
   });
 }
 
-export async function getAddress(id) {
+export async function getAddress() {
   const db = await openDB();
   return new Promise((resolve, reject) => {
     const transaction = db.transaction(['addresses'], 'readonly');
     const store = transaction.objectStore('addresses');
-    const request = store.get(id);
-
-    request.onsuccess = (event) => {
-      if (event.target.result) {
-        resolve(event.target.result);
-      } else {
-        reject('Address not found');
-      }
-    };
-
-    request.onerror = (event) => {
-      reject('Failed to retrieve address: ' + event.target.errorCode);
-    };
-  });
-}
-
-export async function updateAddress(id, updatedAddress) {
-  const db = await openDB();
-  return new Promise((resolve, reject) => {
-    const transaction = db.transaction(['addresses'], 'readwrite');
-    const store = transaction.objectStore('addresses');
-    const request = store.put({ id, address: updatedAddress });
+    const request = store.getAll(); // Fetch all records (assuming single record)
 
     request.onsuccess = () => {
-      resolve('Address updated successfully');
+      const addresses = request.result;
+      resolve(addresses.length > 0 ? addresses[0] : null); // Return the first address if exists
     };
 
     request.onerror = (event) => {
-      reject('Failed to update address: ' + event.target.errorCode);
+      reject('Failed to retrieve address: ' + event.target.error);
     };
   });
 }

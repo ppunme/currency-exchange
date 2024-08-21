@@ -16,6 +16,12 @@ export function openDB() {
       if (!db.objectStoreNames.contains('cashfloats')) {
         db.createObjectStore('cashfloats', { keyPath: 'date' });
       }
+      if (!db.objectStoreNames.contains('addresses')) {
+        db.createObjectStore('addresses', {
+          keyPath: 'id',
+          autoIncrement: true,
+        });
+      }
     };
 
     request.onsuccess = (event) => {

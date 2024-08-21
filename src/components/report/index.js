@@ -10,11 +10,14 @@ import { format } from 'date-fns';
 import ExportToExcel from './ExportToExcel';
 
 const TransactionRow = ({ transaction }) => {
-  const { currency, amount, toAmount, time } = transaction;
+  const { currency, amount, toAmount, time, receiptNo } = transaction;
   const isTHB = currency === 'THB';
 
   return (
     <tr>
+      <td className='border pt-2 px-1 text-center'>
+        {receiptNo ? receiptNo : '-'}
+      </td>
       <td className='border p-2'>
         {currency} to {isTHB ? 'MYR' : 'THB'}
       </td>
@@ -80,6 +83,7 @@ const Report = () => {
               <table className='w-full'>
                 <thead>
                   <tr>
+                    <th className='border pt-2 px-1'>Receipt No.</th>
                     <th className='border p-2 text-left'>{t('transaction')}</th>
                     <th className='border p-2'>THB</th>
                     <th className='border p-2'>MYR</th>
