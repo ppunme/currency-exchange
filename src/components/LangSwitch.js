@@ -10,7 +10,7 @@ const LangSwitch = () => {
   };
 
   return (
-    <div className='flex sm:mt-2'>
+    <div className='flex'>
       <button
         onClick={() => handleChangeLanguage('th')}
         className={`px-2 py-1 text-sm rounded-l-lg ${

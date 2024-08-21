@@ -3,7 +3,7 @@ import { formatNumber } from '../../utils/number';
 import { format } from 'date-fns';
 
 const Receipt = forwardRef(
-  ({ currency, totalAmount, convertedAmount, rates }, ref) => {
+  ({ currency, totalAmount, convertedAmount, rates, receiptNo }, ref) => {
     const currentDate = format(new Date(), 'dd-MM-yyyy HH:mm:ss');
 
     return (
@@ -22,7 +22,7 @@ const Receipt = forwardRef(
           </p>
           <p>Telephone : +66-73-530557</p>
           <p>License no : MC225620099</p>
-          <p>Receipt no : 063880140</p>
+          <p>Receipt no : {receiptNo}</p>
           <p>Date & Time: {currentDate} </p>
         </div>
 

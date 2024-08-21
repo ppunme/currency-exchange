@@ -9,7 +9,7 @@ import { formatNumber } from '../../utils/number';
 import FormInput from './FormInput';
 import { useTranslation } from 'react-i18next';
 import SuccessModal from '../SuccessModal';
-import { saveTransaction } from '../../services/transactionService';
+import { TransactionService } from '../../services';
 import useStore from '../../store/store';
 import { useReactToPrint } from 'react-to-print';
 import Receipt from './Receipt';
@@ -46,6 +46,7 @@ const Calculate = () => {
   const [successModal, setSuccessModal] = useState(false);
 
   const printRef = useRef();
+  const [receiptNo, setReceiptNo] = useState(null);
 
   const handleInputChange = (setter, field) => (e) => {
     const value = e.target.value;
@@ -128,7 +129,7 @@ const Calculate = () => {
   const handleSaveTransaction = async () => {
     try {
       // post transaction to indexedDB
-      const response = await saveTransaction(
+      const response = await TransactionService.saveTransaction(
         currency,
         totalAmount,
         convertedAmount,
@@ -137,6 +138,7 @@ const Calculate = () => {
       if (response.status === 200) {
         setConfirmModal(false);
         setPrintModal(true);
+        setReceiptNo(response.data.receiptNo);
       }
     } catch (error) {
       console.error('Error saving transaction:', error);
@@ -371,6 +373,7 @@ const Calculate = () => {
           totalAmount={totalAmount}
           convertedAmount={convertedAmount}
           rates={rates}
+          receiptNo={receiptNo}
         />
       </PrintModal>
 

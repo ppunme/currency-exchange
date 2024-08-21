@@ -3,7 +3,7 @@ import { Modal, Box, TextField, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import Title from '../Title';
 import useStore from '../../store/store';
-import { saveCashFloat } from '../../services/cashFloatService';
+import { CashFloatService } from '../../services';
 import { useCashFloat } from '../../hooks/useCashFloat';
 import { format } from 'date-fns';
 
@@ -61,7 +61,10 @@ const CashFloatModal = ({ open, handleClose, openSuccessModal }) => {
     }
 
     try {
-      const response = await saveCashFloat(amountTHB, amountMYR);
+      const response = await CashFloatService.saveCashFloat(
+        amountTHB,
+        amountMYR,
+      );
 
       if (response.status === 200) {
         setCashFloat({ thb: amountTHB, myr: amountMYR });

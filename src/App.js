@@ -1,27 +1,29 @@
 import { useEffect, useState } from 'react';
 import {
-  HashRouter as Router,
+  BrowserRouter as Router,
   Routes,
   Route,
   useNavigate,
 } from 'react-router-dom';
 import { Container, ThemeProvider } from '@mui/material';
 import { CurrencyExchangeRounded } from '@mui/icons-material';
-import ExchangeRates from './components/exchangeRate/ExchangeRates';
+import ExchangeRates from './components/exchangeRate';
 import SetRatesModal from './components/exchangeRate/SetRatesModal';
 import SelectCurrency from './components/SelectCurrency';
-import Calculate from './components/calculate/Calculate';
-import Report from './components/report/Report';
+import Calculate from './components/calculate';
+import Report from './components/report';
+import Settings from './components/settings';
 import theme from './theme';
-import { Button, Tooltip } from '@mui/material';
+import { Button, Tooltip, IconButton } from '@mui/material';
 import { AddRounded } from '@mui/icons-material';
 import ReportIcon from './assets/icons/report-icon';
 import LangSwitch from './components/LangSwitch';
-import Summary from './components/summary/Summary';
+import Summary from './components/summary';
 import { useTranslation } from 'react-i18next';
 import './i18n';
 import './App.css';
 import SuccessModal from './components/SuccessModal';
+import SettingIcon from './assets/icons/setting-icon';
 
 const App = () => {
   return (
@@ -49,6 +51,10 @@ const Main = () => {
     navigate('/report');
   };
 
+  const handleSettings = () => {
+    navigate('/settings');
+  };
+
   const openSuccessModal = (open) => {
     setSuccessModal(true);
   };
@@ -56,67 +62,93 @@ const Main = () => {
     setSuccessModal(false);
   };
 
-  useEffect(() => {
-    navigate('/');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
     <ThemeProvider theme={theme}>
-      <Container maxWidth='md' className='py-8 space-y-6'>
-        <div className='flex flex-col sm:flex-row sm:justify-between space-y-2 sm:space-y-0'>
-          <div className='flex sm:flex-col justify-between items-center sm:justify-start sm:items-start'>
-            <Tooltip title={t('home')} placement='right'>
-              <div
-                className='flex items-center space-x-2 cursor-pointer hover:!bg-transparent hover:!text-gray-700'
-                onClick={handleBackHome}
-              >
-                <CurrencyExchangeRounded />
-                <p className='text-xl text-center font-semibold'>
-                  Pooppup Exchange
-                </p>
+      {/* <Navbar /> */}
+      <Container maxWidth='md' className='space-y-6 min-h-screen'>
+        <div class='flex flex-col min-h-screen'>
+          {/* Header */}
+          <header className='flex flex-col sm:flex-row sm:justify-between space-y-2 sm:space-y-0 pt-8'>
+            <div className='flex sm:flex-col justify-between items-center sm:justify-start sm:items-start'>
+              <Tooltip title={t('home')} placement='right'>
+                <div
+                  className='flex items-center space-x-2 cursor-pointer hover:!bg-transparent hover:!text-gray-700'
+                  onClick={handleBackHome}
+                >
+                  <CurrencyExchangeRounded />
+                  <p className='text-xl text-center font-semibold'>
+                    Pooppup Exchange
+                  </p>
+                </div>
+              </Tooltip>
+              <div className='flex items-center sm:mt-2'>
+                <LangSwitch />
+                <div className='sm:hidden'>
+                  <Tooltip title='Setting'>
+                    <IconButton
+                      onClick={handleSettings}
+                      className='!text-gray-700 !p-1'
+                    >
+                      <SettingIcon />
+                    </IconButton>
+                  </Tooltip>
+                </div>
               </div>
-            </Tooltip>
-            <LangSwitch />
-          </div>
-          <div>
-            <div className='flex flex-col space-y-2 sm:flex-row sm:justify-end sm:space-y-0 sm:space-x-2'>
-              <Button
-                disableElevation
-                variant='outlined'
-                startIcon={<ReportIcon />}
-                onClick={handleReport}
-                className='w-full sm:w-32'
-              >
-                {t('report')}
-              </Button>
-              <Button
-                disableElevation
-                variant='contained'
-                startIcon={<AddRounded />}
-                onClick={setModalOpen}
-                color='primary'
-                className='hover:!bg-blue-600 w-full sm:w-auto'
-              >
-                {t('updateExchangeRate')}
-              </Button>
             </div>
-            <ExchangeRates />
+            <div>
+              <div className='flex flex-col space-y-2 sm:flex-row sm:justify-end sm:space-y-0 sm:space-x-2 sm:items-center'>
+                <div className='hidden sm:block'>
+                  <Tooltip title='Setting'>
+                    <IconButton
+                      onClick={handleSettings}
+                      className='!text-gray-700 !p-1'
+                    >
+                      <SettingIcon />
+                    </IconButton>
+                  </Tooltip>
+                </div>
+                <Button
+                  disableElevation
+                  variant='outlined'
+                  startIcon={<ReportIcon />}
+                  onClick={handleReport}
+                  className='w-full sm:w-32'
+                >
+                  {t('report')}
+                </Button>
+                <Button
+                  disableElevation
+                  variant='contained'
+                  startIcon={<AddRounded />}
+                  onClick={setModalOpen}
+                  color='primary'
+                  className='hover:!bg-blue-600 w-full sm:w-auto'
+                >
+                  {t('updateExchangeRate')}
+                </Button>
+              </div>
+              <ExchangeRates />
+            </div>
+          </header>
+
+          <div class='grow py-6'>
+            <Routes>
+              <Route
+                path='/'
+                element={
+                  <>
+                    <SelectCurrency />
+                    <Summary className='pt-6' />
+                  </>
+                }
+              />
+              <Route path='/calculate/:currency' element={<Calculate />} />
+              <Route path='/report' element={<Report />} />
+              <Route path='/settings/*' element={<Settings />} />
+            </Routes>
           </div>
         </div>
-        <Routes>
-          <Route
-            path='/'
-            element={
-              <>
-                <SelectCurrency />
-                <Summary />
-              </>
-            }
-          />
-          <Route path='/calculate/:currency' element={<Calculate />} />
-          <Route path='/report' element={<Report />} />
-        </Routes>
+
         <SetRatesModal
           open={modalOpen}
           handleClose={handleClose}

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getSummary } from '../services/summaryService';
+import { SummaryService } from '../services';
 import useStore from '../store/store';
 
 export function useSummary(date) {
@@ -10,7 +10,7 @@ export function useSummary(date) {
   useEffect(() => {
     async function fetchSummary() {
       if (date) {
-        const fetchedSummary = await getSummary(date);
+        const fetchedSummary = await SummaryService.getSummary(date);
         setSummary(fetchedSummary);
       }
       setLoading(false);

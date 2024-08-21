@@ -11,7 +11,7 @@ import { useSummary } from '../../hooks/useSummary';
 import SuccessModal from '../../components/SuccessModal';
 import useStore from '../../store/store';
 
-const Summary = () => {
+const Summary = ({ className }) => {
   const { t, i18n } = useTranslation();
   const { cashFloat } = useStore();
 
@@ -52,7 +52,7 @@ const Summary = () => {
   }, [i18n.language, cashFloat]); // Re-run effect when language changes
 
   return (
-    <div>
+    <div className={className}>
       <div className='flex justify-between items-end mb-4'>
         <div>
           <Title>Summary</Title>

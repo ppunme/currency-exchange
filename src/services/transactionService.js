@@ -20,8 +20,14 @@ export async function saveTransaction(currency, amount, toAmount) {
 
     const request = store.put(data);
 
-    request.onsuccess = () => {
-      resolve({ status: 200, message: 'Transaction added successfully' });
+    request.onsuccess = (event) => {
+      const id = event.target.result;
+      const receiptNo = `PE${String(id).padStart(6, '0')}`;
+      resolve({
+        status: 200,
+        message: 'Transaction added successfully',
+        data: { receiptNo: receiptNo },
+      });
     };
 
     request.onerror = () => {

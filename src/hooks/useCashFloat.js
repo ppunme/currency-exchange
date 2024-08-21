@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getCashFloat } from '../services/cashFloatService';
+import { CashFloatService } from '../services';
 
 export function useCashFloat(date) {
   const [cashFloat, setCashFloat] = useState();
@@ -9,7 +9,7 @@ export function useCashFloat(date) {
     async function fetchCashFloat() {
       if (date) {
         setLoading(true);
-        const fetchedCashFloat = await getCashFloat(date);
+        const fetchedCashFloat = await CashFloatService.getCashFloat(date);
         setCashFloat(fetchedCashFloat);
       }
       setLoading(false);

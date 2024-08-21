@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getTransactions } from '../services/transactionService';
+import { TransactionService } from '../services';
 
 export function useTransactions(date = null) {
   const [transactions, setTransactions] = useState([]);
@@ -7,7 +7,9 @@ export function useTransactions(date = null) {
 
   useEffect(() => {
     async function fetchTransactions() {
-      const fetchedTransactions = await getTransactions(date);
+      const fetchedTransactions = await TransactionService.getTransactions(
+        date,
+      );
       setTransactions(fetchedTransactions);
       setLoading(false);
     }
