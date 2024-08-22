@@ -32,6 +32,7 @@ const DeleteDB = () => {
       </p>
       <div>
         <Button
+          disableElevation
           startIcon={<DeleteRounded />}
           onClick={() => setConfirmModal(true)}
           variant='contained'

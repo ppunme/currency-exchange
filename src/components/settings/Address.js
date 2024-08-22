@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { AddressService } from '../../services';
 import {
   TextField,
@@ -12,9 +12,11 @@ import {
 import Title from '../Title';
 import { useTranslation } from 'react-i18next';
 import { EditRounded } from '@mui/icons-material';
+import Receipt from '../calculate/Receipt';
 
 const Address = () => {
   const { t } = useTranslation();
+  const printRef = useRef();
 
   const defaultAddress = {
     street: '',
@@ -72,11 +74,11 @@ const Address = () => {
       {savedAddress && !editing ? (
         <>
           <div>
-            <p>{formValues.street}</p>
-            <p>{formValues.district}</p>
-            <p>{formValues.province}</p>
-            <p>{formValues.zipcode}</p>
-            <p>{formValues.phone}</p>
+            <p>{formValues.street},</p>
+            <p>{formValues.district},</p>
+            <p>
+              {formValues.province}, {formValues.zipcode}
+            </p>
           </div>
           <Title>{t('companyInfo')}</Title>
           <div>
@@ -87,6 +89,9 @@ const Address = () => {
             <p>
               {t('licenseNo')} :{' '}
               {formValues.licenseNo ? formValues.licenseNo : '-'}
+            </p>
+            <p>
+              {t('phone')} : {formValues.phone}
             </p>
           </div>
           <div>
@@ -195,6 +200,30 @@ const Address = () => {
           </Grid>
         </form>
       )}
+
+      <Title>Receipt Preview</Title>
+
+      <div className='border' style={{ width: '80mm', height: '120mm' }}>
+        <Receipt
+          ref={printRef}
+          currency='THB'
+          totalAmount='1000'
+          convertedAmount='0'
+          rates={{ sellingRate: '7.82', buyingRate: '7.87' }}
+          receiptNo='PE000001'
+          address={
+            savedAddress
+              ? savedAddress
+              : {
+                  companyName: 'Company Name',
+                  street: 'Street',
+                  district: 'District',
+                  province: 'Province',
+                  zipcode: 'Zipcode',
+                }
+          }
+        />
+      </div>
     </div>
   );
 };
