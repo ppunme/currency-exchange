@@ -2,7 +2,7 @@ import { createTheme } from '@mui/material/styles';
 
 const theme = createTheme({
   typography: {
-    fontFamily: `'Roboto', 'Sarabun'`,
+    fontFamily: 'sans-serif, Sarabun',
     allVariants: {
       color: '#111827', // Set default text color
     },

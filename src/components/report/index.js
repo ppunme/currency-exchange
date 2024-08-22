@@ -137,6 +137,7 @@ const Report = () => {
       @media print {
         body {
           margin: 0;
+          font-family: sans-serif;
         }
       }
       body {

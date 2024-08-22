@@ -13,7 +13,7 @@ const Receipt = forwardRef(
       <div
         ref={ref}
         style={{ width: '80mm', height: '120mm' }}
-        className='text-sm pt-10 px-5 pb-6'
+        className='text-sm pt-10 px-6 pb-6'
       >
         <p className='text-xl text-center font-semibold'>
           {address && address.companyName
