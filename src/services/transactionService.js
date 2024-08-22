@@ -1,7 +1,7 @@
 import { openDB } from './db';
 import { format } from 'date-fns';
 
-export async function saveTransaction(currency, amount, toAmount) {
+export async function saveTransaction(currency, amount, toAmount, rate) {
   const db = await openDB();
   const date = format(new Date(), 'yyyy-MM-dd');
   const time = new Date().getTime();
@@ -14,6 +14,7 @@ export async function saveTransaction(currency, amount, toAmount) {
       currency,
       amount,
       toAmount,
+      rate,
       date,
       time,
     };
@@ -92,6 +93,7 @@ export async function deleteTransaction(id) {
     const request = store.delete(id);
 
     request.onsuccess = () => {
+      console.log('delte');
       resolve({ status: 200, message: 'Transaction deleted successfully' });
     };
 

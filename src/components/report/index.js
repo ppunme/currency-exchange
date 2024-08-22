@@ -1,5 +1,12 @@
-import React, { useState, useMemo } from 'react';
-import { TextField, Paper } from '@mui/material';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
+import {
+  TextField,
+  Paper,
+  IconButton,
+  Menu,
+  MenuItem,
+  ListItemIcon,
+} from '@mui/material';
 import { formatNumber } from '../../utils/number';
 import { useTranslation } from 'react-i18next';
 import SummaryTable from '../summary/SummaryTable';
@@ -8,10 +15,31 @@ import { useTransactions } from '../../hooks/useTransaction';
 import { useSummary } from '../../hooks/useSummary';
 import { format } from 'date-fns';
 import ExportToExcel from './ExportToExcel';
+import PrintModal from '../calculate/PrintModal';
+import Receipt from '../calculate/Receipt';
+import { useReactToPrint } from 'react-to-print';
+import { AddressService, TransactionService } from '../../services';
+import { MoreVert, ArticleRounded, DeleteRounded } from '@mui/icons-material';
 
-const TransactionRow = ({ transaction }) => {
+const TransactionRow = ({ transaction, onRowSelect, onDelete }) => {
   const { currency, amount, toAmount, time, receiptNo } = transaction;
   const isTHB = currency === 'THB';
+
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDelete = () => {
+    onDelete(transaction.id);
+    handleClose();
+  };
 
   return (
     <tr>
@@ -34,12 +62,33 @@ const TransactionRow = ({ transaction }) => {
           second: '2-digit',
         })}
       </td>
+      <td className='border p-2 text-center'>
+        <IconButton onClick={handleClick}>
+          <MoreVert />
+        </IconButton>
+        <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
+          <MenuItem onClick={() => onRowSelect(transaction)}>
+            <ListItemIcon>
+              <ArticleRounded fontSize='small' />
+            </ListItemIcon>
+            View
+          </MenuItem>
+          <MenuItem onClick={handleDelete}>
+            <ListItemIcon>
+              <DeleteRounded fontSize='small' />
+            </ListItemIcon>
+            Delete
+          </MenuItem>
+        </Menu>
+      </td>
     </tr>
   );
 };
 
 const Report = () => {
   const { t } = useTranslation();
+  const [printModal, setPrintModal] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] = useState(null);
 
   const currentDateFormatted = useMemo(() => {
     const currentDate = new Date();
@@ -47,13 +96,70 @@ const Report = () => {
   }, []);
 
   const [selectedDate, setSelectedDate] = useState(currentDateFormatted);
-  const { transactions, loading: transactionsLoading } =
-    useTransactions(selectedDate);
+  const [address, setAddress] = React.useState(null);
+
+  const {
+    transactions,
+    setTransactions,
+    loading: transactionsLoading,
+  } = useTransactions(selectedDate);
   const { summary, loading: summaryLoading } = useSummary(selectedDate);
 
   const handleDateChange = (event) => {
     setSelectedDate(event.target.value);
   };
+
+  const handleDelete = async (id) => {
+    try {
+      const response = await TransactionService.deleteTransaction(id);
+      if (response.status === 200) {
+        setTransactions((prevTransactions) =>
+          prevTransactions.filter((transaction) => transaction.id !== id),
+        );
+      } else {
+        console.error(response.message);
+      }
+    } catch (error) {
+      console.error('Error deleting transaction:', error.message);
+    }
+  };
+
+  const printRef = useRef();
+
+  const print = useReactToPrint({
+    content: () => printRef.current,
+    documentTitle: 'Currency Exchange Receipt',
+    pageStyle: `
+      @page {
+        size: 80mm 120mm;
+        margin: 0;
+      }
+      @media print {
+        body {
+          margin: 0;
+        }
+      }
+      body {
+        font-family: sans-serif;
+      }
+    `,
+    onAfterPrint: () => {
+      setPrintModal(false);
+    },
+    removeAfterPrint: true,
+  });
+
+  useEffect(() => {
+    async function fetchAddress() {
+      try {
+        const address = await AddressService.getAddress();
+        setAddress(address);
+      } catch (error) {
+        console.error('Error fetching address:', error);
+      }
+    }
+    fetchAddress();
+  }, []);
 
   return (
     <div>
@@ -88,11 +194,20 @@ const Report = () => {
                     <th className='border p-2'>THB</th>
                     <th className='border p-2'>MYR</th>
                     <th className='border p-2'>{t('time')}</th>
+                    <th className='border p-2 text-center w-6'></th>
                   </tr>
                 </thead>
                 <tbody>
                   {transactions.map((transaction, index) => (
-                    <TransactionRow key={index} transaction={transaction} />
+                    <TransactionRow
+                      key={index}
+                      transaction={transaction}
+                      onRowSelect={(selectedTransaction) => {
+                        setSelectedTransaction(selectedTransaction);
+                        setPrintModal(true);
+                      }}
+                      onDelete={handleDelete}
+                    />
                   ))}
                 </tbody>
               </table>
@@ -111,6 +226,23 @@ const Report = () => {
           </Paper>
         )}
       </div>
+      {selectedTransaction && (
+        <PrintModal
+          open={printModal}
+          onClose={() => setPrintModal(false)}
+          handlePrint={() => print()}
+        >
+          <Receipt
+            ref={printRef}
+            currency={selectedTransaction.currency}
+            totalAmount={selectedTransaction.amount}
+            convertedAmount={selectedTransaction.toAmount}
+            rate={selectedTransaction.rate}
+            receiptNo={selectedTransaction.receiptNo}
+            address={address}
+          />
+        </PrintModal>
+      )}
     </div>
   );
 };

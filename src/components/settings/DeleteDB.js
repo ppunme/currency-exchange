@@ -6,21 +6,31 @@ import { WarningRounded } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import ConfirmModal from '../ConfirmModal';
 import { DeleteRounded } from '@mui/icons-material';
+import SuccessModal from '../SuccessModal';
 
 const DeleteDB = () => {
   const { t } = useTranslation();
 
   const [confirmModal, setConfirmModal] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
 
-  const handleDeleteDB = () => {
-    // Call the function to delete the database
-    deleteDB()
-      .then(() => {
-        console.log('Database deletion complete');
-      })
-      .catch((error) => {
-        console.error('Database deletion failed', error);
-      });
+  const handleDeleteDB = async () => {
+    try {
+      const response = await deleteDB();
+
+      if (response.status === 200) {
+        setSuccessModal(true);
+        setConfirmModal(false);
+      } else {
+        console.error(response.status, response.message);
+      }
+    } catch (err) {
+      console.error('Database deletion failed', err);
+    }
+  };
+
+  const closeSuccessModal = () => {
+    setSuccessModal(false);
   };
 
   return (
@@ -48,6 +58,12 @@ const DeleteDB = () => {
         title={t('confirmToDeleteTitle')}
         text={t('confirmToDeleteText')}
         color='error'
+      />
+      <SuccessModal
+        open={successModal}
+        onClose={closeSuccessModal}
+        title={t('deleteSuccessTitle')}
+        message={t('deleteSuccessText')}
       />
     </div>
   );

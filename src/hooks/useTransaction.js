@@ -16,5 +16,5 @@ export function useTransactions(date = null) {
     fetchTransactions();
   }, [date]);
 
-  return { transactions, loading };
+  return { transactions, setTransactions, loading }; // Include setTransactions here
 }

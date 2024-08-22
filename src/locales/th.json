@@ -50,5 +50,7 @@
   "confirmToSaveTitle": "ยืนยันการบันทึกข้อมูล",
   "confirmToSaveText": "คุณแน่ใจหรือไม่ว่าต้องการบันทึกรายการนี้?",
   "confirmToDeleteTitle": "ยืนยันการลบ?",
-  "confirmToDeleteText": "คุณกำลังลบฐานข้อมูล ต้องการดำเนินการต่อหรือไม่?"
+  "confirmToDeleteText": "คุณกำลังลบฐานข้อมูล ต้องการดำเนินการต่อหรือไม่?",
+  "deleteSuccessTitle": "ลบ!",
+  "deleteSuccessText": "ลบฐานข้อมูลแล้ว!"
 }

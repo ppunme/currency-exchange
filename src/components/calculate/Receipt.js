@@ -4,7 +4,7 @@ import { format } from 'date-fns';
 
 const Receipt = forwardRef(
   (
-    { currency, totalAmount, convertedAmount, rates, receiptNo, address },
+    { currency, totalAmount, convertedAmount, rate, receiptNo, address },
     ref,
   ) => {
     const currentDate = format(new Date(), 'dd-MM-yyyy HH:mm:ss');
@@ -47,11 +47,7 @@ const Receipt = forwardRef(
           </div>
           <div className='flex justify-between text-lg py-1'>
             <div>Rate</div>
-            <div>
-              {currency === 'THB'
-                ? parseFloat(rates?.sellingRate).toFixed(2)
-                : parseFloat(rates?.buyingRate).toFixed(2)}
-            </div>
+            <div>{rate}</div>
           </div>
           <div className='flex justify-between text-lg py-1'>
             <div>Get</div>
@@ -66,9 +62,9 @@ const Receipt = forwardRef(
           <div className='pt-3'>
             <p className='text-black'>
               1 {currency} ={' '}
-              {currency === 'THB' && rates
-                ? parseFloat(1 / rates?.sellingRate).toFixed(2)
-                : parseFloat(rates?.buyingRate).toFixed(2)}{' '}
+              {currency === 'THB' && rate
+                ? parseFloat(1 / rate).toFixed(2)
+                : parseFloat(rate).toFixed(2)}{' '}
               {currency === 'THB' ? 'MYR' : 'THB'}
             </p>
           </div>

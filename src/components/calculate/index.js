@@ -130,10 +130,16 @@ const Calculate = () => {
   const handleSaveTransaction = async () => {
     try {
       // post transaction to indexedDB
+      const rate =
+        currency === 'THB'
+          ? parseFloat(rates?.sellingRate).toFixed(2)
+          : parseFloat(rates?.buyingRate).toFixed(2);
+
       const response = await TransactionService.saveTransaction(
         currency,
         totalAmount,
         convertedAmount,
+        rate,
       );
 
       if (response.status === 200) {
@@ -175,7 +181,7 @@ const Calculate = () => {
     setSuccessModal(true);
   };
 
-  const closeSuccessfulModal = () => {
+  const closeSuccessModal = () => {
     setSuccessModal(false);
     navigate('/');
   };
@@ -389,13 +395,17 @@ const Calculate = () => {
           currency={currency}
           totalAmount={totalAmount}
           convertedAmount={convertedAmount}
-          rates={rates}
+          rate={
+            currency === 'THB'
+              ? parseFloat(rates?.sellingRate).toFixed(2)
+              : parseFloat(rates?.buyingRate).toFixed(2)
+          }
           receiptNo={receiptNo}
           address={address}
         />
       </PrintModal>
 
-      <SuccessModal open={successModal} onClose={closeSuccessfulModal} />
+      <SuccessModal open={successModal} onClose={closeSuccessModal} />
 
       <div className='hidden'></div>
     </div>

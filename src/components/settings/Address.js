@@ -13,6 +13,7 @@ import Title from '../Title';
 import { useTranslation } from 'react-i18next';
 import { EditRounded } from '@mui/icons-material';
 import Receipt from '../calculate/Receipt';
+import useStore from '../../store/store';
 
 const Address = () => {
   const { t } = useTranslation();
@@ -30,6 +31,7 @@ const Address = () => {
   const [formValues, setFormValues] = React.useState(defaultAddress);
   const [savedAddress, setSavedAddress] = React.useState(null);
   const [editing, setEditing] = React.useState(false);
+  const { rates } = useStore();
 
   const handleChange = (e) => {
     setFormValues({
@@ -209,7 +211,7 @@ const Address = () => {
           currency='THB'
           totalAmount='1000'
           convertedAmount='0'
-          rates={{ sellingRate: '7.82', buyingRate: '7.87' }}
+          rate={parseFloat(rates?.sellingRate).toFixed(2)}
           receiptNo='PE000001'
           address={
             savedAddress

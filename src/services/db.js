@@ -39,13 +39,14 @@ export function deleteDB() {
     const deleteRequest = indexedDB.deleteDatabase('exchangeDB');
 
     deleteRequest.onsuccess = () => {
-      console.log('Database deleted successfully');
-      resolve();
+      resolve({ status: 200, message: 'Database deleted successfullyy' });
     };
 
     deleteRequest.onerror = (event) => {
-      console.error('Error deleting database:', event.target.errorCode);
-      reject(event.target.errorCode);
+      reject({
+        status: event.target.errorCode,
+        message: 'Error deleting database',
+      });
     };
 
     deleteRequest.onblocked = () => {
