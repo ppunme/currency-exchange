@@ -1,6 +1,7 @@
 {
   "error_message": "เกิดข้อผิดพลาด กรุณาลองอีกครั้ง.",
   "submit": "ส่ง",
+  "confirm": "ยืนยัน",
   "cancel": "ยกเลิก",
   "home": "หน้าแรก",
   "report": "รายงาน",
@@ -45,5 +46,9 @@
   "phone": "เบอร์โทรศัพท์",
   "licenseNo": "หมายเลขใบอนุญาต",
   "companyInfo": "ข้อมูลบริษัท",
-  "companyName": "ชื่อบริษัท"
+  "companyName": "ชื่อบริษัท",
+  "confirmToSaveTitle": "ยืนยันการบันทึกข้อมูล",
+  "confirmToSaveText": "คุณแน่ใจหรือไม่ว่าต้องการบันทึกรายการนี้?",
+  "confirmToDeleteTitle": "ยืนยันการลบ?",
+  "confirmToDeleteText": "คุณกำลังลบฐานข้อมูล ต้องการดำเนินการต่อหรือไม่?"
 }

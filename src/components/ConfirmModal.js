@@ -1,41 +1,62 @@
-import React from 'react';
-import { Modal, Box, Button } from '@mui/material';
+import Button from '@mui/material/Button';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
 import { useTranslation } from 'react-i18next';
 
-const ConfirmModal = ({ open, onClose, onSave, children }) => {
+const ConfirmModal = ({
+  title,
+  text,
+  open,
+  onClose,
+  onSave,
+  color = 'primary',
+}) => {
   const { t } = useTranslation();
 
   return (
-    <Modal
+    <Dialog
       open={Boolean(open)}
       onClose={onClose}
-      aria-labelledby='set-rate-modal'
-      aria-describedby='set-exchange-rate-modal'
+      aria-labelledby='alert-dialog-title'
+      aria-describedby='alert-dialog-description'
     >
-      <Box className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 bg-white shadow-lg p-6 rounded-xl'>
-        <p>Are you sure you want to save this transaction</p>
-        <div className='flex mt-2 space-x-2'>
-          <Button
-            disableElevation
-            onClick={onClose}
-            variant='outlined'
-            color='primary'
-            className='w-full'
-          >
-            {t('cancel')}
-          </Button>
-          <Button
-            disableElevation
-            onClick={onSave}
-            variant='contained'
-            color='primary'
-            className='hover:!bg-blue-600 w-full'
-          >
-            {t('save')}
-          </Button>
-        </div>
-      </Box>
-    </Modal>
+      <DialogTitle id='alert-dialog-title'>{title}</DialogTitle>
+      <DialogContent>
+        <DialogContentText
+          id='alert-dialog-description'
+          className='!text-gray-900'
+        >
+          {text}
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions className='flex mt-2 space-x-2'>
+        <Button
+          disableElevation
+          onClick={onClose}
+          variant='outlined'
+          color='primary'
+          className='w-full'
+        >
+          {t('cancel')}
+        </Button>
+        <Button
+          disableElevation
+          onClick={onSave}
+          variant='contained'
+          color={color ? color : 'primary'}
+          className={`${
+            color && color === 'error'
+              ? 'hover:!bg-red-600'
+              : 'hover:!bg-blue-600'
+          } w-full`}
+        >
+          {t('confirm')}
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 };
 

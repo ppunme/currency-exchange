@@ -1,6 +1,7 @@
 {
   "error_message": "An error occurred. Please try again.",
   "submit": "Submit",
+  "confirm": "Confirm",
   "cancel": "Cancel",
   "home": "Home",
   "report": "Report",
@@ -45,5 +46,9 @@
   "phone": "Phone",
   "licenseNo": "License No.",
   "companyInfo": "Company Info",
-  "companyName": "Company Name"
+  "companyName": "Company Name",
+  "confirmToSaveTitle": "Confirm",
+  "confirmToSaveText": "Are you sure you want to save this transaction?",
+  "confirmToDeleteTitle": "Delete?",
+  "confirmToDeleteText": "Are you sure you want to permanently delete database?"
 }

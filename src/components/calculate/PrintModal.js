@@ -2,6 +2,7 @@ import React from 'react';
 import { Modal, Box, Button } from '@mui/material';
 import { useTranslation } from 'react-i18next';
 import Title from '../Title';
+import { PrintRounded } from '@mui/icons-material';
 
 const PrintModal = ({ open, onClose, handlePrint, children }) => {
   const { t } = useTranslation();
@@ -32,6 +33,7 @@ const PrintModal = ({ open, onClose, handlePrint, children }) => {
             variant='contained'
             color='primary'
             className='hover:!bg-blue-600 w-full'
+            endIcon={<PrintRounded />}
           >
             {t('print')}
           </Button>

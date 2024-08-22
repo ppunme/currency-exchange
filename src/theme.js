@@ -7,7 +7,14 @@ const theme = createTheme({
       color: '#111827', // Set default text color
     },
   },
-  palette: {},
+  palette: {
+    primary: {
+      main: '#3b82f6', // Your custom primary color
+    },
+    secondary: {
+      main: '#ff4081', // Custom secondary color (optional)
+    },
+  },
 });
 
 export default theme;

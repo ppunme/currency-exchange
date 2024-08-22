@@ -154,27 +154,21 @@ const Calculate = () => {
         size: 80mm 120mm;
         margin: 0;
       }
+      @media print {
+        body {
+          margin: 0;
+        }
+      }
+      body {
+        font-family: sans-serif;
+      }
     `,
-
-    // pageStyle: `
-    //   @page {
-    //     size: 80mm 120mm;
-    //     margin: 0;
-    //   }
-    //   @media print {
-    //     body {
-    //       margin: 0;
-    //     }
-    //   }
-    // `,
-    onAfterPrint: () => setSuccessModal(true),
+    onAfterPrint: () => {
+      setPrintModal(false);
+      setSuccessModal(true);
+    },
     removeAfterPrint: true,
   });
-
-  const handlePrint = () => {
-    print();
-    setPrintModal(false);
-  };
 
   const closePrintModal = () => {
     setPrintModal(false);
@@ -381,12 +375,14 @@ const Calculate = () => {
         open={confirmModal}
         onClose={() => setConfirmModal(false)}
         onSave={handleSaveTransaction}
+        title={t('confirmToSaveTitle')}
+        text={t('confirmToSaveText')}
       />
 
       <PrintModal
         open={printModal}
         onClose={closePrintModal}
-        handlePrint={handlePrint}
+        handlePrint={() => print()}
       >
         <Receipt
           ref={printRef}

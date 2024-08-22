@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '@mui/material';
 import { deleteDB } from '../../services/db';
 import Title from '../Title';
 import { WarningRounded } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
+import ConfirmModal from '../ConfirmModal';
+import { DeleteRounded } from '@mui/icons-material';
 
 const DeleteDB = () => {
   const { t } = useTranslation();
+
+  const [confirmModal, setConfirmModal] = useState(false);
 
   const handleDeleteDB = () => {
     // Call the function to delete the database
@@ -27,10 +31,23 @@ const DeleteDB = () => {
         <span>{t('deleteDBDesc')}</span>
       </p>
       <div>
-        <Button onClick={handleDeleteDB} variant='contained' color='error'>
+        <Button
+          startIcon={<DeleteRounded />}
+          onClick={() => setConfirmModal(true)}
+          variant='contained'
+          color='error'
+        >
           {t('deleteDBTitle')}
         </Button>
       </div>
+      <ConfirmModal
+        open={confirmModal}
+        onClose={() => setConfirmModal(false)}
+        onSave={handleDeleteDB}
+        title={t('confirmToDeleteTitle')}
+        text={t('confirmToDeleteText')}
+        color='error'
+      />
     </div>
   );
 };

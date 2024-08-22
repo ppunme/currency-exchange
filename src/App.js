@@ -86,7 +86,7 @@ const Main = () => {
                   <Tooltip title={t('settings')}>
                     <IconButton
                       onClick={handleSettings}
-                      className='!text-gray-700 !p-1'
+                      className='!text-gray-900 !p-1'
                     >
                       <SettingIcon />
                     </IconButton>
@@ -100,7 +100,7 @@ const Main = () => {
                   <Tooltip title={t('settings')}>
                     <IconButton
                       onClick={handleSettings}
-                      className='!text-gray-700 !p-1'
+                      className='!text-gray-900 !p-1'
                     >
                       <SettingIcon />
                     </IconButton>

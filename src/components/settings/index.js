@@ -30,7 +30,7 @@ const Settings = () => {
           onClick={() => navigate('/settings')}
           className={`${
             isActive('/settings')
-              ? '!bg-[#1976d2] hover:!bg-blue-600'
+              ? '!bg-blue-500 hover:!bg-blue-600'
               : 'bg-inherit'
           } !rounded-md`}
           color='primary'
@@ -54,7 +54,7 @@ const Settings = () => {
           onClick={() => navigate('/settings/delete-db')}
           className={`${
             isActive('/settings/delete-db')
-              ? '!bg-[#1976d2] hover:!bg-blue-600'
+              ? '!bg-blue-500 hover:!bg-blue-600'
               : 'bg-inherit'
           } !rounded-md`}
         >
