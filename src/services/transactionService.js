@@ -93,7 +93,6 @@ export async function deleteTransaction(id) {
     const request = store.delete(id);
 
     request.onsuccess = () => {
-      console.log('delte');
       resolve({ status: 200, message: 'Transaction deleted successfully' });
     };
 

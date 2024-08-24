@@ -76,7 +76,7 @@ const Address = () => {
       {savedAddress && !editing ? (
         <>
           <div>
-            <p>{formValues.street},</p>
+            <p>{formValues.street ? `${formValues.street},` : ''}</p>
             <p>{formValues.district},</p>
             <p>
               {formValues.province}, {formValues.zipcode}
@@ -93,7 +93,7 @@ const Address = () => {
               {formValues.licenseNo ? formValues.licenseNo : '-'}
             </p>
             <p>
-              {t('phone')} : {formValues.phone}
+              {t('phone')} : {formValues.phone ? formValues.phone : '-'}
             </p>
           </div>
           <div>
@@ -119,7 +119,6 @@ const Address = () => {
                 value={formValues.street}
                 onChange={handleChange}
                 fullWidth
-                required
               />
             </Grid>
             <Grid item xs={12} sm={6}>

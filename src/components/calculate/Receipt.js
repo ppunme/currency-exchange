@@ -16,17 +16,15 @@ const Receipt = forwardRef(
         className='text-sm pt-10 px-6 pb-6'
       >
         <p className='text-xl text-center font-semibold'>
-          {address && address.companyName
-            ? address.companyName
-            : 'Pooppup Exchange Co., Ltd.'}
+          {address && address.companyName ? address.companyName : null}
         </p>
         <div className='flex flex-col space-y-1'>
-          <p className='text-center text-lg'>Receipt</p>
+          <p className='text-center text-xl'>Receipt</p>
           {address ? (
             <>
               <p className='mt-3'>
-                {address.street}, {address.district}, {address.province},{' '}
-                {address.zipcode}
+                {address.street ? `${address.street},` : null}{' '}
+                {address.district}, {address.province}, {address.zipcode}
               </p>
               {address.phone ? <p>Telephone : {address.phone}</p> : null}
               {address.licenseNo ? (

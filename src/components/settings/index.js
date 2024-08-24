@@ -60,7 +60,7 @@ const Settings = () => {
         >
           <ListItemIcon
             className={`${
-              isActive('/settings/delete-db') ? '!text-white' : '!text-gray-800'
+              isActive('/settings/delete-db') ? '!text-white' : '!text-gray-700'
             } !min-w-0 sm:!min-w-12`}
           >
             <FolderCopyRounded />
@@ -69,7 +69,7 @@ const Settings = () => {
             primary={t('database')}
             disableTypography
             className={`${
-              isActive('/settings/delete-db') ? 'text-white' : 'text-gray-800'
+              isActive('/settings/delete-db') ? 'text-white' : 'text-gray-700'
             } font-medium hidden sm:block`}
           />
         </ListItemButton>

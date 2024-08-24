@@ -5,7 +5,7 @@ import Title from '../Title';
 import { WarningRounded } from '@mui/icons-material';
 import { useTranslation } from 'react-i18next';
 import ConfirmModal from '../ConfirmModal';
-import { DeleteRounded } from '@mui/icons-material';
+import { DeleteOutlined } from '@mui/icons-material';
 import SuccessModal from '../SuccessModal';
 
 const DeleteDB = () => {
@@ -43,7 +43,7 @@ const DeleteDB = () => {
       <div>
         <Button
           disableElevation
-          startIcon={<DeleteRounded />}
+          startIcon={<DeleteOutlined />}
           onClick={() => setConfirmModal(true)}
           variant='contained'
           color='error'

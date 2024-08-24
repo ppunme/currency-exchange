@@ -51,6 +51,8 @@
   "confirmToSaveText": "Are you sure you want to save this transaction?",
   "confirmToDeleteTitle": "Delete?",
   "confirmToDeleteText": "Are you sure you want to permanently delete database?",
-  "deleteSuccessTitle": "Success",
-  "deleteSuccessText": "Delete database successfully!"
+  "deleteSuccessTitle": "Delete!",
+  "deleteSuccessText": "Delete database successfully!",
+  "confirmToDeleteTransaction": "Are you sure you want to delete this transaction?",
+  "deleteTransactionSuccess": "Delete transaction successfully!"
 }

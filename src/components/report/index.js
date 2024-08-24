@@ -19,7 +19,9 @@ import PrintModal from '../calculate/PrintModal';
 import Receipt from '../calculate/Receipt';
 import { useReactToPrint } from 'react-to-print';
 import { AddressService, TransactionService } from '../../services';
-import { MoreVert, ArticleRounded, DeleteRounded } from '@mui/icons-material';
+import { MoreVert, ArticleOutlined, DeleteOutlined } from '@mui/icons-material';
+import ConfirmModal from '../ConfirmModal';
+import SuccessModal from '../SuccessModal';
 
 const TransactionRow = ({ transaction, onRowSelect, onDelete }) => {
   const { currency, amount, toAmount, time, receiptNo } = transaction;
@@ -37,45 +39,48 @@ const TransactionRow = ({ transaction, onRowSelect, onDelete }) => {
   };
 
   const handleDelete = () => {
-    onDelete(transaction.id);
+    onDelete(transaction);
     handleClose();
   };
 
   return (
     <tr>
-      <td className='border pt-2 px-1 text-center'>
-        {receiptNo ? receiptNo : '-'}
-      </td>
-      <td className='border p-2'>
+      <td className='border px-2 text-center'>{receiptNo ? receiptNo : '-'}</td>
+      <td className='border px-2'>
         {currency} to {isTHB ? 'MYR' : 'THB'}
       </td>
-      <td className='border p-2 text-right'>
+      <td className='border px-2 text-right'>
         {formatNumber(isTHB ? amount : -toAmount, 2)}
       </td>
-      <td className='border p-2 text-right'>
+      <td className='border px-2 text-right'>
         {formatNumber(isTHB ? -toAmount : amount, 2)}
       </td>
-      <td className='border p-2 text-center'>
+      <td className='border px-2 text-center'>
         {new Date(time).toLocaleTimeString([], {
           hour: '2-digit',
           minute: '2-digit',
           second: '2-digit',
         })}
       </td>
-      <td className='border p-2 text-center'>
+      <td className='border text-center'>
         <IconButton onClick={handleClick}>
           <MoreVert />
         </IconButton>
         <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-          <MenuItem onClick={() => onRowSelect(transaction)}>
+          <MenuItem
+            onClick={() => {
+              onRowSelect(transaction);
+              handleClose();
+            }}
+          >
             <ListItemIcon>
-              <ArticleRounded fontSize='small' />
+              <ArticleOutlined fontSize='small' className='text-gray-800' />
             </ListItemIcon>
             View
           </MenuItem>
           <MenuItem onClick={handleDelete}>
             <ListItemIcon>
-              <DeleteRounded fontSize='small' />
+              <DeleteOutlined fontSize='small' className='text-gray-800' />
             </ListItemIcon>
             Delete
           </MenuItem>
@@ -89,6 +94,8 @@ const Report = () => {
   const { t } = useTranslation();
   const [printModal, setPrintModal] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState(null);
+  const [confirmDelete, setConfirmDelete] = useState(false);
+  const [successModal, setSuccessModal] = useState(false);
 
   const currentDateFormatted = useMemo(() => {
     const currentDate = new Date();
@@ -109,18 +116,25 @@ const Report = () => {
     setSelectedDate(event.target.value);
   };
 
-  const handleDelete = async (id) => {
+  const handleDelete = async () => {
     try {
-      const response = await TransactionService.deleteTransaction(id);
+      const response = await TransactionService.deleteTransaction(
+        selectedTransaction.id,
+      );
       if (response.status === 200) {
         setTransactions((prevTransactions) =>
-          prevTransactions.filter((transaction) => transaction.id !== id),
+          prevTransactions.filter(
+            (transaction) => transaction.id !== selectedTransaction.id,
+          ),
         );
+        setSuccessModal(true);
       } else {
         console.error(response.message);
       }
     } catch (error) {
       console.error('Error deleting transaction:', error.message);
+    } finally {
+      setConfirmDelete(false); // Close the modal after deletion attempt
     }
   };
 
@@ -137,11 +151,7 @@ const Report = () => {
       @media print {
         body {
           margin: 0;
-          font-family: sans-serif;
         }
-      }
-      body {
-        font-family: sans-serif;
       }
     `,
     onAfterPrint: () => {
@@ -207,7 +217,10 @@ const Report = () => {
                         setSelectedTransaction(selectedTransaction);
                         setPrintModal(true);
                       }}
-                      onDelete={handleDelete}
+                      onDelete={(transaction) => {
+                        setSelectedTransaction(transaction); // Set the transaction to delete
+                        setConfirmDelete(true); // Open the confirmation modal
+                      }}
                     />
                   ))}
                 </tbody>
@@ -244,6 +257,20 @@ const Report = () => {
           />
         </PrintModal>
       )}
+      <ConfirmModal
+        open={confirmDelete}
+        onClose={() => setConfirmDelete(false)}
+        onSave={handleDelete}
+        title={t('confirmToDeleteTitle')}
+        text={t('confirmToDeleteTransaction')}
+        color='error'
+      />
+      <SuccessModal
+        open={successModal}
+        onClose={() => setSuccessModal(false)}
+        title={t('deleteSuccessTitle')}
+        message={t('deleteTransactionSuccess')}
+      />
     </div>
   );
 };

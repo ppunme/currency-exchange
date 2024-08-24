@@ -7,10 +7,17 @@ import { PrintRounded } from '@mui/icons-material';
 const PrintModal = ({ open, onClose, handlePrint, children }) => {
   const { t } = useTranslation();
 
+  const handleClose = (event, reason) => {
+    if (reason && reason === 'backdropClick') {
+      return; // Do nothing if the click is outside the modal (on the backdrop)
+    }
+    onClose(); // Close the modal if the close button or escape key is pressed
+  };
+
   return (
     <Modal
       open={Boolean(open)}
-      onClose={onClose}
+      onClose={handleClose}
       aria-labelledby='set-rate-modal'
       aria-describedby='set-exchange-rate-modal'
     >

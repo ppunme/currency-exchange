@@ -36,7 +36,7 @@ const SuccessModal = ({ open, onClose, title, message }) => {
           <h2 className='text-2xl font-bold text-teal-500'>
             {title || t('success')}
           </h2>
-          <p className='mt-2 text-gray-700'>
+          <p className='mt-2 text-gray-800'>
             {message || t('successfullySaved')}
           </p>
         </div>

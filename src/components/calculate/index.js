@@ -73,6 +73,9 @@ const Calculate = () => {
       const note100Value = note100 === '' ? 0 : Number(note100);
       const note50Value = note50 === '' ? 0 : Number(note50);
       const note20Value = note20 === '' ? 0 : Number(note20);
+      const note10Value = note10 === '' ? 0 : Number(note10);
+      const note5Value = note5 === '' ? 0 : Number(note5);
+      const note1Value = note1 === '' ? 0 : Number(note1);
       const coin10Value = coin10 === '' ? 0 : Number(coin10);
       const coin5Value = coin5 === '' ? 0 : Number(coin5);
       const coin1Value = coin1 === '' ? 0 : Number(coin1);
@@ -84,6 +87,9 @@ const Calculate = () => {
         note100Value * 100 +
         note50Value * 50 +
         note20Value * 20 +
+        note10Value * 10 +
+        note5Value * 5 +
+        note1Value * 1 +
         coin10Value * 10 +
         coin5Value * 5 +
         coin1Value * 1;
@@ -115,6 +121,9 @@ const Calculate = () => {
     note100,
     note50,
     note20,
+    note10,
+    note5,
+    note1,
     coin10,
     coin5,
     coin1,
